@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <div id="tempo" ></div>
+    <div id="enter"></div>
+    
+    <form onsubmit="checkAnswer(event)">
+        <label for="answer">Resposta</label><br>
+        <input type="text" id="answer" name="answer"><br><br>
+        <input type="submit" value="Corrigir"><br><br><br><br><br><br><br><br><br><br><br><br>
+        <a id="voltar" name="voltar" href="/index.html">Voltar</a>
+    </form>
+    <script>
+        var count = 10;
+        function tickSecond(){
+          if ((count - 1) >= 0){
+            count -= 1;
+            if (count == 0) {
+              count = "Acabou o tempo!";
+            }else if(count < 10){
+              count = "0"+count;
+            }
+            document.getElementById('tempo').innerHTML='<p>'+count+'</p>';
+            setTimeout(tickSecond, 1000);
+          }
+          else {
+              multiplication()
+              count = 10
+              tickSecond()
+          }
+        }
+        var mUp = null, mLow = null, amount = 0, correctQuestions = 0
+        function multiplication () {
+            amount++
+            if (amount == 26){
+                window.alert(''+correctQuestions+' de 100')
+                window.location.href='/index.html'
+              }
+            mUp = Math.floor(Math.random() * 8) + 2;
+            mLow = Math.floor(Math.random() * 8) + 2;
+            document.getElementById("enter").innerHTML = "<p>"+mUp+" x "+mLow+"</p>"
+        }
+        function checkAnswer (event) {
+            event.preventDefault();
+            if (document.getElementById("answer").value == mUp * mLow) {
+                window.alert('resposta certa! Mais 4 pontos!')
+                multiplication()
+                document.getElementById("answer").value = null
+                correctQuestions += 4
+                count = 10
+            }
+            else {window.alert('resposta errada!') 
+            document.getElementById("answer").value = null}
+        }
+        multiplication()
+        tickSecond()
+    </script>
+</body>
+</html>
