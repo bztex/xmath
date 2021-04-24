@@ -35,7 +35,7 @@
           }
           else {
               multiplication()
-              count = 5
+              count = 6
               tickSecond()
           }
         }
@@ -44,7 +44,7 @@
 
         function multiplication () {
             amount++
-            if (amount == 25){
+            if (amount == 26){
                 window.alert(''+correctQuestions+' de 100')
                 window.location.href='/index.html'
               }
@@ -61,7 +61,7 @@
                 multiplication()
                 document.getElementById("answer").value = null
                 correctQuestions += 4
-                count = 5
+                count = 6
             }
             else {window.alert('resposta errada!') 
             document.getElementById("answer").value = null}
