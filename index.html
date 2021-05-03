@@ -1,87 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%;">
     <head>
         <meta charset='utf-8'>
         <meta http-equiv='X-UA-Compatible' content='IE=edge'>
         <title>Teste</title>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-        <script src='main.js'></script>
         <script>
         </script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <style>
-                .easy {
-                background-color: rgba(43, 255, 0, 0.822);
-                color: rgb(0, 0, 0);
-                border: 2px solid rgba(43, 255, 0, 0.822);
-                margin-left: 55px;
-                margin-top: 55px;
-                margin-bottom: 10px;
-                margin-right: 5px;
-                padding-top: 200px;
-                padding-right: 106px;
-                padding-bottom: 200px;
-                padding-left: 106px;
-                font-size: 100px;
-                }.medium {
-                background-color: rgba(255, 230, 0, 0.822);
-                color: rgb(0, 0, 0);
-                border: 2px solid rgba(255, 230, 0, 0.822);
-                margin-left: 5px;
-                margin-top: 55px;
-                margin-bottom: 10px;
-                margin-right: 5px;
-                padding-top: 200px;
-                padding-right: 106px;
-                padding-bottom: 200px;
-                padding-left: 106px;
-                font-size: 100px;
-                }.hard {
-                background-color: rgba(255, 0, 0, 0.822);
-                color: rgb(0, 0, 0);
-                border: 2px solid rgba(255, 0, 0, 0.822);
-                margin-left: 5px;
-                margin-top: 55px;
-                margin-bottom: 10px;
-                margin-right: 50px;
-                padding-top: 200px;
-                padding-right: 106px;
-                padding-bottom: 200px;
-                padding-left: 106px;
-                font-size: 100px;
-                }
-                .infinity   {
-                background-color: rgb(0, 0, 0);
-                color: rgb(255, 255, 255);
-                border: 2px solid black;
-                margin-left: 55px;
-                margin-top: 10px;
-                margin-bottom: 0px;
-                margin-right: 50px;
-                padding-top: 30px;
-                padding-right: 564px;
-                padding-bottom: 30px;
-                padding-left: 564px;
-                font-size: 100px;
-                }
-                .bottom-button {
-                    width: 100%;
-                }
+          
         </style>
     </head>
-    <body>
-            <div style="width: 100%; display: flex; justify-content: space-between;">
-                <a class="top-button easy" href="/easy-mode">Fácil</a>
-                <a class="top-button medium" href="/medium-mode">Médio</a>
-                <a class="top-button hard" href="/hard-mode">Difícil</a>
+    <body style="height: 100%;">
+        <div id="tela-inicial" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+            <div id="setup-view" style="display: flex; flex-direction: column; max-width: 400px;">
+                <label>Tempo de Jogo</label>
+                <input id="tempo-jogo" onchange="updateTimer()" type="number" value="" />
+                <button onclick="play()">Jogar</button>
             </div>
-            <div style="width: 100%; display: flex; justify-content: space-between;">
-                <title class="infinity" href="/infinity-mode">Infinito</title>
+            <div id="play-view" style="display: none;flex-direction: column; align-items: center;">
+                <label>Tempo restante: <span id="tempo-restante">0</span> segundos</label>
+                <label id="multiplication">5 X 6</label>
+                <input id="answer" onchange="document.getElementById('wrong-answer').style.display = 'none'" type="number" style="width: 100px;" />
+                <label style="display: none; color: red;" id="wrong-answer">Resposta Errada!</label>
+                <button onclick="submitAnswer()" style="margin: 10px;">Confirmar</button>
+            </div>
+            <div id="score-view" style="display: none;flex-direction: column; align-items: center;">
+                <label id="score-message">Perfeito,Foi Bem Tente melhorar!</label>
+                <label id="score">Score</label>
             </div>
         </div>
+        <script>
+            let timer = 60, multiplication = [], score = 0;
+            
+
+            var element = document.getElementById('tempo-jogo');
+            console.log(element);
+            element.value = timer / 60;
+
+            function updateTimer() {
+                var element = document.getElementById('tempo-jogo');
+                timer = element.value * 60;
+                console.log(timer);
+            }
+
+            function loadMultiplication() {
+                multiplication = [
+                    Math.floor(Math.random() * 8) + 2,
+                    Math.floor(Math.random() * 8) + 2
+                ];
+                refreshDisplayMultiplication();
+            }
+
+            function play() {
+                document.getElementById('setup-view').style.display = 'none';
+                document.getElementById('play-view').style.display = 'flex';
+
+                refreshDisplayTime();
+                loadMultiplication();
+                refreshDisplayMultiplication();
+
+                setTimeout(decrementTimer, 1000);
+            }
+
+            function submitAnswer() {
+                var answer = document.getElementById('answer').value;
+                var correctAnswer = multiplication[0] * multiplication[1];
+
+                if (answer == correctAnswer) {
+                    score++;
+                    document.getElementById('answer').value = '';
+                    loadMultiplication();
+                } else {
+                    document.getElementById('wrong-answer').style.display = 'flex';
+                }
+            }
+            
+            function refreshDisplayMultiplication() {
+                element = document.getElementById('multiplication');
+                element.innerText = multiplication[0] + ' x ' + multiplication[1];
+            }
+
+            function refreshDisplayTime() {
+                element = document.getElementById('tempo-restante');
+                element.innerText = timer;
+            }
+
+            function decrementTimer() {
+                timer--;
+
+                refreshDisplayTime();
+
+                if (timer > 0) {
+                    setTimeout(decrementTimer, 1000);
+                }
+                else {
+                    document.getElementById('score').innerText = score;
+                    //document.getElementById('score-message').innerText = 
+
+                    document.getElementById('play-view').style.display = 'none';
+                    document.getElementById('score-view').style.display = 'flex';
+                }
+            }
+
+        </script>
     </body>
 </html>
